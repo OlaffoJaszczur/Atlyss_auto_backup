@@ -1,0 +1,18 @@
+{
+	"bmi-installation" : null,
+	"compiler-frontend-variant" : "GNU",
+	"compiler-id" : "GNU",
+	"compiler-simulate-id" : "",
+	"config" : "Debug",
+	"cxx-modules" : {},
+	"dir-cur-bld" : "D:/C_lion/Atlyss_auto_git/cmake-build-debug",
+	"dir-cur-src" : "D:/C_lion/Atlyss_auto_git",
+	"dir-top-bld" : "D:/C_lion/Atlyss_auto_git/cmake-build-debug",
+	"dir-top-src" : "D:/C_lion/Atlyss_auto_git",
+	"exports" : [],
+	"forward-modules-from-target-dirs" : [],
+	"include-dirs" : [],
+	"language" : "CXX",
+	"linked-target-dirs" : [],
+	"module-dir" : "D:/C_lion/Atlyss_auto_git/cmake-build-debug/CMakeFiles/Atlyss_auto_git.dir"
+}
