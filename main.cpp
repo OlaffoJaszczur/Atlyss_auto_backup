@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <vector>
 #include <windows.h>
+#include <ctime>
 
 namespace fs = std::filesystem;
 
@@ -11,6 +12,28 @@ std::string getCurrentDirectory() {
     char buffer[MAX_PATH];
     GetModuleFileName(NULL, buffer, MAX_PATH);
     return fs::path(buffer).parent_path().string();
+}
+
+// Function to get the current time and date as a string
+std::string getCurrentTimestamp() {
+    time_t now = time(0);
+    char buf[80];
+    tm timeInfo;
+    localtime_s(&timeInfo, &now);
+    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &timeInfo);
+    return std::string(buf);
+}
+
+// Function to execute a Git commit with a custom message
+void commitToGit(const std::string& startTime, const std::string& endTime) {
+    std::string commitMessage = "Program run started at: " + startTime + ", ended at: " + endTime;
+    std::string command = "git add . && git commit -m \"" + commitMessage + "\"";
+    int result = std::system(command.c_str());
+    if (result == 0) {
+        std::cout << "Files committed successfully with message: " << commitMessage << std::endl;
+    } else {
+        std::cerr << "Failed to commit files. Ensure Git is installed and configured." << std::endl;
+    }
 }
 
 // Class to handle character backup operations
@@ -158,6 +181,12 @@ int main() {
     std::string currentDirectory = getCurrentDirectory();
     std::cout << "Current directory: " << currentDirectory << std::endl;
 
+    // Temporary failsafe
+    if (currentDirectory != "D:\\SteamLibrary\\steamapps\\common\\ATLYSS") {
+        std::cout << "Wrong directory" << std::endl;
+        return 0;
+    }
+
     // Directory and file name settings for character backup
     const std::string characterFilePrefix = "atl_characterProfile_";
     const std::string backupSuffixBefore = "_before";
@@ -185,6 +214,10 @@ int main() {
     StorageBackup storageBackupAfter(storageFilesAfter);
     ATLYSSProgram atlyssProgram(executablePath);
 
+    // Start time
+    std::string startTime = getCurrentTimestamp();
+    std::cout << "Program started at: " << startTime << std::endl;
+
     // Create "before" backups
     if (!characterBackup.createBeforeBackups() || !storageBackupBefore.createBackups()) {
         return 1;
@@ -199,6 +232,13 @@ int main() {
     if (!characterBackup.createAfterBackups() || !storageBackupAfter.createBackups()) {
         return 1;
     }
+
+    // End time
+    std::string endTime = getCurrentTimestamp();
+    std::cout << "Program ended at: " << endTime << std::endl;
+
+    // Commit all files to Git with the timestamps
+    commitToGit(startTime, endTime);
 
     return 0;
 }
