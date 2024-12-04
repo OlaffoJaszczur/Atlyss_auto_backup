@@ -159,7 +159,7 @@ int main() {
     std::cout << "Current directory: " << currentDirectory << std::endl;
 
     // Directory and file name settings for character backup
-    const std::string characterFilePrefix = "alt_characterProfile_";
+    const std::string characterFilePrefix = "atl_characterProfile_";
     const std::string backupSuffixBefore = "_before";
     const std::string backupSuffixAfter = "_after";
     const std::vector<int> characterIndices = {0, 1, 2, 3, 4, 5, 6};
