@@ -6,6 +6,13 @@
 
 namespace fs = std::filesystem;
 
+// Helper function to get the current executable's directory
+std::string getCurrentDirectory() {
+    char buffer[MAX_PATH];
+    GetModuleFileName(NULL, buffer, MAX_PATH);
+    return fs::path(buffer).parent_path().string();
+}
+
 // Class to handle character backup operations
 class CharacterBackup {
 private:
@@ -40,8 +47,8 @@ private:
         bool allBackupsSuccessful = true;
 
         for (int index : fileIndices) {
-            std::string originalFilePath = directoryPath + "\\" + filePrefix + std::to_string(index);
-            std::string backupFilePath = directoryPath + "\\" + filePrefix + std::to_string(index) + backupSuffix;
+            std::string originalFilePath = directoryPath + "\\ATLYSS_Data\\profileCollections\\" + filePrefix + std::to_string(index);
+            std::string backupFilePath = directoryPath + "\\ATLYSS_Data\\profileCollections\\" + filePrefix + std::to_string(index) + backupSuffix;
 
             if (fs::exists(originalFilePath)) {
                 std::cout << "Found file: " << originalFilePath << std::endl;
@@ -147,30 +154,33 @@ public:
 
 // Main function
 int main() {
+    // Auto-detect the current directory
+    std::string currentDirectory = getCurrentDirectory();
+    std::cout << "Current directory: " << currentDirectory << std::endl;
+
     // Directory and file name settings for character backup
-    const std::string characterDirectoryPath = R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections)";
-    const std::string characterFilePrefix = "atl_characterProfile_";
+    const std::string characterFilePrefix = "alt_characterProfile_";
     const std::string backupSuffixBefore = "_before";
     const std::string backupSuffixAfter = "_after";
     const std::vector<int> characterIndices = {0, 1, 2, 3, 4, 5, 6};
 
     // Storage backup file paths
     const std::vector<std::pair<std::string, std::string>> storageFilesBefore = {
-        {R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank)", R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_before)"},
-        {R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_01)", R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_01_before)"},
-        {R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_02)", R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_02_before)"}
+        {currentDirectory + "\\ATLYSS_Data\\profileCollections\\atl_itemBank", currentDirectory + "\\ATLYSS_Data\\profileCollections\\atl_itemBank_before"},
+        {currentDirectory + "\\ATLYSS_Data\\profileCollections\\atl_itemBank_01", currentDirectory + "\\ATLYSS_Data\\profileCollections\\atl_itemBank_01_before"},
+        {currentDirectory + "\\ATLYSS_Data\\profileCollections\\atl_itemBank_02", currentDirectory + "\\ATLYSS_Data\\profileCollections\\atl_itemBank_02_before"}
     };
 
     const std::vector<std::pair<std::string, std::string>> storageFilesAfter = {
-        {R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank)", R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_after)"},
-        {R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_01)", R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_01_after)"},
-        {R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_02)", R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_02_after)"}
+        {currentDirectory + "\\ATLYSS_Data\\profileCollections\\atl_itemBank", currentDirectory + "\\ATLYSS_Data\\profileCollections\\atl_itemBank_after"},
+        {currentDirectory + "\\ATLYSS_Data\\profileCollections\\atl_itemBank_01", currentDirectory + "\\ATLYSS_Data\\profileCollections\\atl_itemBank_01_after"},
+        {currentDirectory + "\\ATLYSS_Data\\profileCollections\\atl_itemBank_02", currentDirectory + "\\ATLYSS_Data\\profileCollections\\atl_itemBank_02_after"}
     };
 
-    const std::string executablePath = R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS.exe)";
+    const std::string executablePath = currentDirectory + "\\ATLYSS.exe";
 
     // Create objects
-    CharacterBackup characterBackup(characterDirectoryPath, characterFilePrefix, backupSuffixBefore, backupSuffixAfter, characterIndices);
+    CharacterBackup characterBackup(currentDirectory, characterFilePrefix, backupSuffixBefore, backupSuffixAfter, characterIndices);
     StorageBackup storageBackupBefore(storageFilesBefore);
     StorageBackup storageBackupAfter(storageFilesAfter);
     ATLYSSProgram atlyssProgram(executablePath);
