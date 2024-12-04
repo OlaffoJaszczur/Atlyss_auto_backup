@@ -20,13 +20,13 @@ std::string getCurrentTimestamp() {
     char buf[80];
     tm timeInfo;
     localtime_s(&timeInfo, &now);
-    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &timeInfo);
+    strftime(buf, sizeof(buf), "%Y_%m_%d_%H_%M_%S", &timeInfo);
     return std::string(buf);
 }
 
 // Function to execute a Git commit with a custom message
 void commitToGit(const std::string& startTime, const std::string& endTime) {
-    std::string commitMessage = "Program run started at: " + startTime + ", ended at: " + endTime;
+    std::string commitMessage = "Program_run_started_at_" + startTime + "ended_at_" + endTime;
     std::string command = "git add . && git commit -m \"" + commitMessage + "\"";
     int result = std::system(command.c_str());
     if (result == 0) {
@@ -182,7 +182,11 @@ int main() {
     std::cout << "Current directory: " << currentDirectory << std::endl;
 
     // Temporary failsafe
-    if (currentDirectory != "D:\\SteamLibrary\\steamapps\\common\\ATLYSS") {
+    if (currentDirectory == "D:\\SteamLibrary\\steamapps\\common\\ATLYSS" || currentDirectory == "C:\\SteamLibrary\\steamapps\\common\\ATLYSS") {
+        std::cout << "Correct directory" << std::endl;
+
+    }
+    else {
         std::cout << "Wrong directory" << std::endl;
         return 0;
     }
