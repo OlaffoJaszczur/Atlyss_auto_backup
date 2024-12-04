@@ -2,8 +2,37 @@
 #include <fstream>
 #include <filesystem>
 #include <windows.h>
+#include <vector>
 
 namespace fs = std::filesystem;
+
+// Class to handle backup operations for a list of files
+class StorageBackup {
+private:
+    std::vector<std::pair<std::string, std::string>> backupFiles; // Pairs of original file paths and their backup paths
+
+public:
+    // Constructor
+    StorageBackup(const std::vector<std::pair<std::string, std::string>>& files) : backupFiles(files) {}
+
+    // Create backups
+    bool createBackups() {
+        for (const auto& [originalPath, backupPath] : backupFiles) {
+            try {
+                if (fs::exists(backupPath)) {
+                    fs::remove(backupPath);
+                    std::cout << "Existing backup file removed: " << backupPath << std::endl;
+                }
+                fs::copy_file(originalPath, backupPath);
+                std::cout << "Backup created: " << backupPath << std::endl;
+            } catch (const std::exception& e) {
+                std::cerr << "Failed to create backup (" << backupPath << "): " << e.what() << std::endl;
+                return false;
+            }
+        }
+        return true;
+    }
+};
 
 // Class to handle character backup operations
 class CharacterBackup {
@@ -91,24 +120,47 @@ public:
 
 // Main function
 int main() {
-    // File paths
-    const std::string originalFilePath = R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_characterProfile_0)";
-    const std::string backupBeforePath = R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\alt_characterProfile_0_before)";
-    const std::string backupAfterPath = R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\alt_characterProfile_0_after)";
+    // File paths for character backup
+    const std::string characterOriginalFilePath = R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_characterProfile_0)";
+    const std::string characterBackupBeforePath = R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\alt_characterProfile_0_before)";
+    const std::string characterBackupAfterPath = R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\alt_characterProfile_0_after)";
+
+    // File paths for storage backup
+    const std::vector<std::pair<std::string, std::string>> storageFiles = {
+        {R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank)",
+         R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_before)"},
+        {R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_01)",
+         R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_01_before)"},
+        {R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_02)",
+         R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_02_before)"}
+    };
+
+    // File paths for "after" storage backup
+    const std::vector<std::pair<std::string, std::string>> storageFilesAfter = {
+        {R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank)",
+         R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_after)"},
+        {R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_01)",
+         R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_01_after)"},
+        {R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_02)",
+         R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_itemBank_02_after)"}
+    };
+
     const std::string executablePath = R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS.exe)";
 
     // Create objects
-    CharacterBackup characterBackup(originalFilePath, backupBeforePath, backupAfterPath);
+    CharacterBackup characterBackup(characterOriginalFilePath, characterBackupBeforePath, characterBackupAfterPath);
+    StorageBackup storageBackupBefore(storageFiles);
+    StorageBackup storageBackupAfter(storageFilesAfter);
     ATLYSSProgram atlyssProgram(executablePath);
 
     // Check if the original file exists
-    if (!fs::exists(originalFilePath)) {
-        std::cerr << "Original file not found: " << originalFilePath << std::endl;
+    if (!fs::exists(characterOriginalFilePath)) {
+        std::cerr << "Original character file not found: " << characterOriginalFilePath << std::endl;
         return 1;
     }
 
-    // Create "before" backup
-    if (!characterBackup.createBeforeBackup()) {
+    // Create "before" backups
+    if (!characterBackup.createBeforeBackup() || !storageBackupBefore.createBackups()) {
         return 1;
     }
 
@@ -117,8 +169,8 @@ int main() {
         return 1;
     }
 
-    // Create "after" backup
-    if (!characterBackup.createAfterBackup()) {
+    // Create "after" backups
+    if (!characterBackup.createAfterBackup() || !storageBackupAfter.createBackups()) {
         return 1;
     }
 
