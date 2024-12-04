@@ -23,6 +23,15 @@ Atlyss_auto_git_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 Atlyss_auto_git_SOURCE_DIR:STATIC=D:/C_lion/Atlyss_auto_git
 
+//Value Computed by CMake
+Atlyss_auto_remote_git_BINARY_DIR:STATIC=D:/C_lion/Atlyss_auto_git/cmake-build-debug
+
+//Value Computed by CMake
+Atlyss_auto_remote_git_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+Atlyss_auto_remote_git_SOURCE_DIR:STATIC=D:/C_lion/Atlyss_auto_git
+
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=C:/GCC/bin/addr2line.exe
 

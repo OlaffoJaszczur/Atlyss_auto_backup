@@ -27,12 +27,22 @@ std::string getCurrentTimestamp() {
 // Function to execute a Git commit with a custom message
 void commitToGit(const std::string& startTime) {
     std::string commitMessage = "Program_run_started_at_" + startTime;
-    std::string command = "git add . && git commit -m \"" + commitMessage + "\"";
+    std::string command = "git add . && git commit -m \"" + commitMessage + "\" && git push";
     int result = std::system(command.c_str());
     if (result == 0) {
         std::cout << "Files committed successfully with message: " << commitMessage << std::endl;
     } else {
         std::cerr << "Failed to commit files. Ensure Git is installed and configured." << std::endl;
+    }
+}
+
+void gitPull() {
+    std::string command = "git pull";
+    int result = std::system(command.c_str());
+    if (result == 0) {
+        std::cout << "Files pulled successfully with message: " << std::endl;
+    } else {
+        std::cerr << "Failed to pull files. Ensure Git is installed and configured." << std::endl;
     }
 }
 
@@ -221,6 +231,9 @@ int main() {
     // Start time
     std::string startTime = getCurrentTimestamp();
     std::cout << "Program started at: " << startTime << std::endl;
+
+    // Pull files from remote
+    gitPull();
 
     // Create "before" backups
     if (!characterBackup.createBeforeBackups() || !storageBackupBefore.createBackups()) {
