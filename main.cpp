@@ -25,8 +25,8 @@ std::string getCurrentTimestamp() {
 }
 
 // Function to execute a Git commit with a custom message
-void commitToGit(const std::string& startTime, const std::string& endTime) {
-    std::string commitMessage = "Program_run_started_at_" + startTime + "ended_at_" + endTime;
+void commitToGit(const std::string& startTime) {
+    std::string commitMessage = "Program_run_started_at_" + startTime;
     std::string command = "git add . && git commit -m \"" + commitMessage + "\"";
     int result = std::system(command.c_str());
     if (result == 0) {
@@ -242,7 +242,7 @@ int main() {
     std::cout << "Program ended at: " << endTime << std::endl;
 
     // Commit all files to Git with the timestamps
-    commitToGit(startTime, endTime);
+    commitToGit(startTime);
 
     return 0;
 }
