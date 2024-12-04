@@ -6,9 +6,10 @@
 namespace fs = std::filesystem;
 
 int main() {
-    // Path to the file to backup
+    // Paths for the file to back up
     const std::string originalFilePath = R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\atl_characterProfile_0)";
-    const std::string backupFilePath = R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\alt_characterProfile_0_before)";
+    const std::string backupBeforePath = R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\alt_characterProfile_0_before)";
+    const std::string backupAfterPath = R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS_Data\profileCollections\alt_characterProfile_0_after)";
 
     // Path to the ATLYSS.exe executable
     const char* executablePath = R"(D:\SteamLibrary\steamapps\common\ATLYSS\ATLYSS.exe)";
@@ -19,23 +20,23 @@ int main() {
         return 1;
     }
 
-    // Delete the backup file if it exists
+    // Delete the backup before file if it exists
     try {
-        if (fs::exists(backupFilePath)) {
-            fs::remove(backupFilePath);
-            std::cout << "Existing backup file removed: " << backupFilePath << std::endl;
+        if (fs::exists(backupBeforePath)) {
+            fs::remove(backupBeforePath);
+            std::cout << "Existing 'before' backup file removed: " << backupBeforePath << std::endl;
         }
     } catch (const std::exception& e) {
-        std::cerr << "Failed to remove existing backup: " << e.what() << std::endl;
+        std::cerr << "Failed to remove existing 'before' backup: " << e.what() << std::endl;
         return 1;
     }
 
-    // Create a new backup
+    // Create a new backup before starting ATLYSS.exe
     try {
-        fs::copy_file(originalFilePath, backupFilePath);
-        std::cout << "Backup created: " << backupFilePath << std::endl;
+        fs::copy_file(originalFilePath, backupBeforePath);
+        std::cout << "'Before' backup created: " << backupBeforePath << std::endl;
     } catch (const std::exception& e) {
-        std::cerr << "Failed to create backup: " << e.what() << std::endl;
+        std::cerr << "Failed to create 'before' backup: " << e.what() << std::endl;
         return 1;
     }
 
@@ -43,7 +44,7 @@ int main() {
     STARTUPINFO si = { sizeof(STARTUPINFO) };
     PROCESS_INFORMATION pi = { 0 };
 
-    // Start the process
+    // Start the ATLYSS.exe process
     if (!CreateProcess(
             NULL,                 // No module name (use command line)
             const_cast<char*>(executablePath), // Command line
@@ -56,7 +57,7 @@ int main() {
             &si,                  // Pointer to STARTUPINFO structure
             &pi)                  // Pointer to PROCESS_INFORMATION structure
     ) {
-        std::cerr << "Failed to start Atlyss.exe. Error code: " << GetLastError() << std::endl;
+        std::cerr << "Failed to start ATLYSS.exe. Error code: " << GetLastError() << std::endl;
         return 1;
     }
 
@@ -71,6 +72,20 @@ int main() {
     // Clean up
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
+
+    // Create the 'after' backup of the file
+    try {
+        if (fs::exists(backupAfterPath)) {
+            fs::remove(backupAfterPath);
+            std::cout << "Existing 'after' backup file removed: " << backupAfterPath << std::endl;
+        }
+
+        fs::copy_file(originalFilePath, backupAfterPath);
+        std::cout << "'After' backup created: " << backupAfterPath << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Failed to create 'after' backup: " << e.what() << std::endl;
+        return 1;
+    }
 
     return 0;
 }
