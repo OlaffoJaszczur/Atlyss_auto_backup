@@ -34,4 +34,8 @@ How it should look like:
 
 ![image](https://github.com/user-attachments/assets/c35da75c-dad9-4fa6-9011-59372959ea6f)
 
-The last few steps are to download a .zip file from the Reliese tab on this webpage. Once downloaded move the .zip file into the ATLYSS folder and extract it there.
+The last few steps are to download Atlyss_auto_git_v_1_0.zip file from the Reliese tab on this webpage. Once downloaded move the Atlyss_auto_git_v_1_0.zip file into the ATLYSS folder and extract it there. Move the content inside the Atlyss_auto_git_v_1_0 folder (Atlyss_auto_git.exe and appicon.ico) to the ATLYSS one. You can delete the Atlyss_auto_git_v_1_0.zip and Atlyss_auto_git_v_1_0 folders. 
+
+All done. To play ATLYSS simply run the Atlyss_auto_git.exe and all the backupping will happen in the background :)
+
+One thing that I adive is to make a shortcut of the Atlyss_auto_git.exe and move it to the desctop. You can rename the shortcut and change it's icon to appicon.ico for a nicer experience.
