@@ -1,1 +1,26 @@
-A tutorial will be placed here 
+What are the prerequisites for this app to work? 
+1. Have GIT installed on your computer. If you do not have it installed or are unsure, this link provides the latest official installer: https://git-scm.com/downloads/win.
+2. Have a GitHub account.
+3. If you do not know how to use git, I highly recommend downloading the GUI provided by GitHub: https://github.com/apps/desktop. I will use this GUI in the instructions later on, but feel free to skip this step if you prefer using the terminal.
+4. Be on the Windows operating system. Unfortunately, for now, I lack the knowledge to fully integrate this app on Linux, but it is my next goal.
+
+Now, assuming you meet all of the prerequisites, let me show you how to set up the Auto backup app.
+
+First Open Steam and navigate to the Library tab, find ATLYSS and right-click it. Then from the popup select "Manage", hover over "Browse local files" and select it.
+
+![Screenshot_43](https://github.com/user-attachments/assets/392781a8-9c32-41cf-ad4f-b81367dbce44)
+
+A new window of File Explorer will open. Copy the path to that folder. You can do so by clicking on the empty space in the path window. A path will be automatically selected. Ctrl+C will do the trick. Keep it in the background for now.
+
+![image](https://github.com/user-attachments/assets/7d0fef9c-3923-478d-86ee-5f656408f99f)
+
+
+Next, open the GitHub Desktop app. Click "File" and then "New Repository".
+
+![image](https://github.com/user-attachments/assets/4c1c5d5d-7510-412a-a306-918a8af9bdca)
+
+A new window will pop up. Name the repository however, you like (I recommend naming it the same as the name of the app: Atlyss_auto_git).
+In the "Local Path" window paste the previously copied path to the Atlyss folder.
+The rest can be left as default or empty. An example:
+
+![image](https://github.com/user-attachments/assets/610697a5-7b80-42b5-ab8d-f0d69b443aa2)
