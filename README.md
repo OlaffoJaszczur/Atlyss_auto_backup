@@ -26,4 +26,12 @@ How it should look like:
 
 ![image](https://github.com/user-attachments/assets/6f313107-4f2a-4a15-8d30-79d5c7b50496)
 
+In the GitHub Desktop, you will now see a big blue button "Publish repository". Once pressed a new pop-up will appear.
+Name the remote repository however you like, it Doesn't have to be named ATLYSS (I advise naming it something like "ATLYSS Backup" or "Atlyss Failsafe" or something along those lines).
+Remember to have "Keep this code private" checked.
+Then press "Publish repository".
+How it should look like:
 
+![image](https://github.com/user-attachments/assets/c35da75c-dad9-4fa6-9011-59372959ea6f)
+
+The last few steps are to download a .zip file from the Reliese tab on this webpage. Once downloaded move the .zip file into the ATLYSS folder and extract it there.
