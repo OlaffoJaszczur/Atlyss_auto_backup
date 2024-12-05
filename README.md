@@ -19,8 +19,11 @@ Next, open the GitHub Desktop app. Click "File" and then "New Repository".
 
 ![image](https://github.com/user-attachments/assets/4c1c5d5d-7510-412a-a306-918a8af9bdca)
 
-A new window will pop up. Name the repository however, you like (I recommend naming it the same as the name of the app: Atlyss_auto_git).
-In the "Local Path" window paste the previously copied path to the Atlyss folder.
-The rest can be left as default or empty. An example:
+A new window will pop up. Name the repository "ATLYSS".
+In the "Local Path" window paste the previously copied path to the Atlyss folder except delete the "/ATLYSS" part.
+The rest can be left as default or empty. Then click "Create repository".
+How it should look like:
 
-![image](https://github.com/user-attachments/assets/610697a5-7b80-42b5-ab8d-f0d69b443aa2)
+![image](https://github.com/user-attachments/assets/6f313107-4f2a-4a15-8d30-79d5c7b50496)
+
+
